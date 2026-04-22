@@ -1,7 +1,7 @@
 import type { Express } from 'express';
 import type { Firestore } from 'firebase-admin/firestore';
 import { buildContainer } from '@infrastructure/config';
-import { loadEnv } from '@infrastructure/config/env';
+import { loadEnv, resolveProjectId } from '@infrastructure/config/env';
 import { createApp } from '@infrastructure/http/app';
 import { getFirestore, initFirebase } from '@infrastructure/persistence/firestore';
 import { createLogger } from '@shared/utils/logger';
@@ -13,7 +13,7 @@ import { createLogger } from '@shared/utils/logger';
 export function buildTestApp(): { app: Express; db: Firestore } {
   const env = loadEnv();
   const logger = createLogger('test');
-  initFirebase(env.FIREBASE_PROJECT_ID);
+  initFirebase(resolveProjectId(env));
   const db = getFirestore();
   const container = buildContainer({ env, db, logger });
   const app = createApp(container);
