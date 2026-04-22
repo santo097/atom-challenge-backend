@@ -1,0 +1,46 @@
+{
+  "functions": [
+    {
+      "source": "backend",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "tests",
+        "coverage",
+        "*.local",
+        "src",
+        "tsconfig.json",
+        "tsconfig.test.json",
+        ".eslintrc.js",
+        ".prettierrc.json",
+        "jest.config.js",
+        "jest.integration.config.js",
+        "nodemon.json",
+        ".env*",
+        "service-account.json"
+      ],
+      "predeploy": [],
+      "runtime": "nodejs20"
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    },
+    "singleProjectMode": true
+  }
+}
