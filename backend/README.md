@@ -6,7 +6,7 @@ Express + TypeScript sobre Firebase Cloud Functions con Firestore.
 > Implementado con **arquitectura hexagonal** (ports & adapters), tests
 > unitarios + integración, y todas las decisiones de seguridad, validación
 > y manejo de errores que evalúa el challenge.
-
+ 
 ---
 
 ## 📑 Tabla de contenidos
