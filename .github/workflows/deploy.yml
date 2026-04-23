@@ -72,24 +72,11 @@ jobs:
         working-directory: backend
         run: npm run build
 
-      # Autenticación usando FIREBASE_TOKEN (CI token clásico)
-      # Este approach usa tu propia cuenta de Firebase, no un service account.
-      # Es más directo y evita los problemas de Service Usage API.
       - name: Deploy Firestore rules & indexes
-        run: |
-          npx firebase-tools deploy \
-            --only firestore \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} \
-            --non-interactive \
-            --token "${{ secrets.FIREBASE_TOKEN }}"
+        run: npx firebase-tools deploy --only firestore --project ${{ vars.FIREBASE_PROJECT_ID }} --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
 
       - name: Deploy Cloud Functions
-        run: |
-          npx firebase-tools deploy \
-            --only functions \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} \
-            --non-interactive \
-            --token "${{ secrets.FIREBASE_TOKEN }}"
+        run: npx firebase-tools deploy --only functions --project ${{ vars.FIREBASE_PROJECT_ID }} --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
         env:
           JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
           CORS_ORIGINS: ${{ vars.CORS_ORIGINS }}
