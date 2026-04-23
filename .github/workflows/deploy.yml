@@ -80,20 +80,18 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          project_id: ${{ vars.FIREBASE_PROJECT_ID }}
+          create_credentials_file: true # Indispensable
+          export_environment_variables: true
 
       - name: Deploy Firestore rules & indexes
+        # Usamos la ruta del archivo generado por el paso 'auth'
         run: firebase deploy --only firestore --project ${{ vars.FIREBASE_PROJECT_ID }} --non-interactive
         env:
-          GOOGLE_CLOUD_QUOTA_PROJECT: ${{ vars.FIREBASE_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
 
       - name: Deploy Cloud Functions
-        run: |
-          firebase deploy \
-            --only functions \
-            --project ${{ vars.FIREBASE_PROJECT_ID }} \
-            --non-interactive
+        run: firebase deploy --only functions --project ${{ vars.FIREBASE_PROJECT_ID }} --non-interactive
         env:
-          GOOGLE_CLOUD_QUOTA_PROJECT: ${{ vars.FIREBASE_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
           JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
           CORS_ORIGINS: ${{ vars.CORS_ORIGINS }}
