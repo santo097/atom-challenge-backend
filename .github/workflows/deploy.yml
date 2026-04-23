@@ -75,8 +75,15 @@ jobs:
       - name: Deploy Firestore rules & indexes
         run: npx firebase-tools deploy --only firestore --project ${{ vars.FIREBASE_PROJECT_ID }} --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
 
+      # Generamos el archivo .env.<projectId> que Firebase espera.
+      # Los valores vienen de las variables del ambiente production en GitHub.
+      - name: Create .env file for Firebase deploy
+        working-directory: backend
+        run: |
+          echo "JWT_EXPIRES_IN=${{ vars.JWT_EXPIRES_IN }}" > .env.${{ vars.FIREBASE_PROJECT_ID }}
+          echo "CORS_ORIGINS=${{ vars.CORS_ORIGINS }}" >> .env.${{ vars.FIREBASE_PROJECT_ID }}
+          echo "--- Contenido del archivo generado (para debug) ---"
+          cat .env.${{ vars.FIREBASE_PROJECT_ID }}
+
       - name: Deploy Cloud Functions
         run: npx firebase-tools deploy --only functions --project ${{ vars.FIREBASE_PROJECT_ID }} --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
-        env:
-          JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
-          CORS_ORIGINS: ${{ vars.CORS_ORIGINS }}
